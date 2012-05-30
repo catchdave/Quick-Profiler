@@ -7,19 +7,19 @@
  */
 interface ProfileObservable
 {
-  
-  /**
-   * 
-   * @param QuickProfiler $profiler
-   */
-  public function attachProfiler(QuickProfiler $profiler);
-  
-  /**
-   * Add an event to the profiler
-   * 
-   * @param array $details
-   * @param float $time
-   * @param integer $memory
-   */
-  public function addProfileEvent(array $details, $time, $memory);
+	
+	/**
+	 *
+	 * @param QuickProfiler $profiler        	
+	 */
+	public function attachProfiler(QuickProfiler $profiler);
+	
+	/**
+	 * Add an event to the profiler
+	 *
+	 * @param array $details        	
+	 * @param float $time        	
+	 * @param integer $memory        	
+	 */
+	public function addProfileEvent(array $details, $time, $memory);
 }

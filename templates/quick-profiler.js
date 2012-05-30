@@ -70,7 +70,7 @@ var QP = (function() {
     toggleValue: function (element)
     {
       var detail = $(element).next('div');
-      console.log(element, detail)
+
       if (detail.hasClass('pQp-hide')) {
         detail.removeClass('pQp-hide');
       } else {

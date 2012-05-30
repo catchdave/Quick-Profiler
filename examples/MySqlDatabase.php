@@ -13,9 +13,8 @@
 
 - - - - - - - - - - - - - - - - - - - - - */
 
-require_once('PqpDatabase.Interface.php');
-
-class MySqlDatabase implements PqpDatabase {
+class MySqlDatabase implements ProfileObservable
+{
 
 	private $host;			
 	private $user;		

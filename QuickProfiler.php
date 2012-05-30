@@ -1,204 +1,179 @@
 <?php
 
-/* - - - - - - - - - - - - - - - - - - - - -
-
- Title : PHP Quick Profiler Class
- Author : Created by Ryan Campbell
- URL : http://particletree.com
-
- Last Updated : April 22, 2009
-
- Description : This class processes the logs and organizes the data
- for output to the browser. Initialize this class with a start time at
- the beginning of your code, and then call the display method when your code
- is terminating.
-
-- - - - - - - - - - - - - - - - - - - - - */
+/**
+ * Profile time and memory and provides a console.
+ * 
+ * @author Ryan Campbell. April 22, 2009
+ * @author Modifed by David Rochwerger <catch.dave@gmail.com>
+ * @see http://particletree.com
+ */
 
 class QuickProfiler
 {
-	
+	/**
+	 * Output buffer
+	 * @var array
+	 */
 	public $output = array();
-	public $config = '';
 	
-	public function __construct($startTime, $config = '/PHP-Quick-Profiler/') {
-		$this->startTime = $startTime;
-		$this->config = $config;
-		require_once($_SERVER['DOCUMENT_ROOT'].$config.'classes/Console.php');
+	/**
+	 * @param float $startTime        	
+	 */
+	public function __construct($startTime = null)
+	{
+		$this->startTime = $startTime ?: microtime(true);
 	}
 	
-	/*-------------------------------------------
-	     FORMAT THE DIFFERENT TYPES OF LOGS
-	-------------------------------------------*/
-	
-	public function gatherConsoleData() {
+	/**
+	 * Format the different types of logs
+	 */
+	public function gatherConsoleData()
+	{
 		$logs = Console::getLogs();
-		if($logs['console']) {
-			foreach($logs['console'] as $key => $log) {
-				if($log['type'] == 'log') {
-					$logs['console'][$key]['data'] = print_r($log['data'], true);
-				}
-				elseif($log['type'] == 'memory') {
-					$logs['console'][$key]['data'] = $this->getReadableFileSize($log['data']);
-				}
-				elseif($log['type'] == 'speed') {
-					$logs['console'][$key]['data'] = $this->getReadableTime(($log['data'] - $this->startTime)*1000);
+		if ($logs ['console']) {
+			foreach ( $logs ['console'] as $key => $log ) {
+				if ($log ['type'] == 'log') {
+					$logs ['console'] [$key] ['data'] = print_r($log ['data'], true);
+				} elseif ($log ['type'] == 'memory') {
+					$logs ['console'] [$key] ['data'] = $this->getReadableFileSize($log ['data']);
+				} elseif ($log ['type'] == 'speed') {
+					$logs ['console'] [$key] ['data'] = $this->getReadableTime($log ['data'] - $this->startTime);
 				}
 			}
 		}
-		$this->output['logs'] = $logs;
+		$this->output ['logs'] = $logs;
 	}
 	
-	/*-------------------------------------------
-	    AGGREGATE DATA ON THE FILES INCLUDED
-	-------------------------------------------*/
-	
-	public function gatherFileData() {
+	/**
+	 * Aggregate data on the files included
+	 */
+	public function gatherFileData()
+	{
 		$files = get_included_files();
 		$fileList = array();
 		$fileTotals = array(
-			"count" => count($files),
-			"size" => 0,
-			"largest" => 0,
+				'count' => count($files),
+				'size' => 0,
+				'largest' => 0 
 		);
-
-		foreach($files as $key => $file) {
+		
+		foreach ( $files as $key => $file ) {
 			$size = filesize($file);
-			$fileList[] = array(
+			$fileList [] = array(
 					'name' => $file,
-					'size' => $this->getReadableFileSize($size)
-				);
-			$fileTotals['size'] += $size;
-			if($size > $fileTotals['largest']) $fileTotals['largest'] = $size;
+					'size' => $this->getReadableFileSize($size) 
+			);
+			$fileTotals ['size'] += $size;
+			if ($size > $fileTotals ['largest'])
+				$fileTotals ['largest'] = $size;
 		}
 		
-		$fileTotals['size'] = $this->getReadableFileSize($fileTotals['size']);
-		$fileTotals['largest'] = $this->getReadableFileSize($fileTotals['largest']);
-		$this->output['files'] = $fileList;
-		$this->output['fileTotals'] = $fileTotals;
+		$fileTotals ['size'] = $this->getReadableFileSize($fileTotals ['size']);
+		$fileTotals ['largest'] = $this->getReadableFileSize($fileTotals ['largest']);
+		$this->output ['files'] = $fileList;
+		$this->output ['fileTotals'] = $fileTotals;
 	}
 	
-	/*-------------------------------------------
-	     MEMORY USAGE AND MEMORY AVAILABLE
-	-------------------------------------------*/
-	
-	public function gatherMemoryData() {
+	/**
+	 * Memory usage and memory available
+	 */
+	public function gatherMemoryData()
+	{
 		$memoryTotals = array();
-		$memoryTotals['used'] = $this->getReadableFileSize(memory_get_peak_usage());
-		$memoryTotals['total'] = ini_get("memory_limit");
-		$this->output['memoryTotals'] = $memoryTotals;
+		$memoryTotals ['used'] = $this->getReadableFileSize(memory_get_peak_usage());
+		$memoryTotals ['total'] = ini_get('memory_limit');
+		$this->output ['memoryTotals'] = $memoryTotals;
 	}
 	
-	/*--------------------------------------------------------
-	     QUERY DATA -- DATABASE OBJECT WITH LOGGING REQUIRED
-	----------------------------------------------------------*/
-	
-	public function gatherQueryData() {
+	/**
+	 * Query data -- database object with logging required
+	 */
+	public function gatherQueryData()
+	{
 		$queryTotals = array();
-		$queryTotals['count'] = 0;
-		$queryTotals['time'] = 0;
+		$queryTotals ['count'] = 0;
+		$queryTotals ['time'] = 0;
 		$queries = array();
 		
-		if($this->db != '') {
-			$queryTotals['count'] += $this->db->queryCount;
-			foreach($this->db->queries as $key => $query) {
-				$query = $this->attemptToExplainQuery($query);
-				$queryTotals['time'] += $query['time'];
-				$query['time'] = $this->getReadableTime($query['time']);
-				$queries[] = $query;
+		$queryTotals ['time'] = $this->getReadableTime($queryTotals ['time']);
+		$this->output ['queries'] = $queries;
+		$this->output ['queryTotals'] = $queryTotals;
+	}
+	
+	/**
+	 * Speed data for entire page load
+	 */
+	public function gatherSpeedData()
+	{
+		$speedTotals = array();
+		$speedTotals ['total'] = $this->getReadableTime(microtime(true) - $this->startTime);
+		$speedTotals ['allowed'] = ini_get('max_execution_time');
+		$this->output ['speedTotals'] = $speedTotals;
+	}
+	
+	/**
+	 * Adapted from code at
+	 * http://aidanlister.com/repos/v/function.size_readable.php
+	 *
+	 * @param integer $size        	
+	 * @param unknown_type $retString        	
+	 */
+	public function getReadableFileSize($size, $retString = null)
+	{
+		$sizes = array('bytes', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
+		$lastSizeString = end($sizes);
+		
+		foreach ( $sizes as $sizeString ) {
+			if ($size < 1024) {
+				break;
+			}
+			if ($sizeString != $lastSizeString) {
+				$size /= 1024;
 			}
 		}
-		
-		$queryTotals['time'] = $this->getReadableTime($queryTotals['time']);
-		$this->output['queries'] = $queries;
-		$this->output['queryTotals'] = $queryTotals;
-	}
-	
-	/*--------------------------------------------------------
-	     CALL SQL EXPLAIN ON THE QUERY TO FIND MORE INFO
-	----------------------------------------------------------*/
-	
-	function attemptToExplainQuery($query) {
-		try {
-			$sql = 'EXPLAIN '.$query['sql'];
-			$rs = $this->db->query($sql);
+		if ($sizeString == $sizes [0]) {
+			$retString = '%01d %s'; // Bytes aren't normally fractional
+		} else {
+			$retString = '%01.2f %s';
 		}
-		catch(Exception $e) {}
-		if($rs) {
-			$row = mysql_fetch_array($rs, MYSQL_ASSOC);
-			$query['explain'] = $row;
-		}
-		return $query;
+		return sprintf($retString, $size, $sizeString);
 	}
 	
-	/*-------------------------------------------
-	     SPEED DATA FOR ENTIRE PAGE LOAD
-	-------------------------------------------*/
-	
-	public function gatherSpeedData() {
-		$speedTotals = array();
-		$speedTotals['total'] = $this->getReadableTime(($this->getMicroTime() - $this->startTime)*1000);
-		$speedTotals['allowed'] = ini_get("max_execution_time");
-		$this->output['speedTotals'] = $speedTotals;
-	}
-	
-	/*-------------------------------------------
-	     HELPER FUNCTIONS TO FORMAT DATA
-	-------------------------------------------*/
-	
-	function getMicroTime() {
-		$time = microtime();
-		$time = explode(' ', $time);
-		return $time[1] + $time[0];
-	}
-	
-	public function getReadableFileSize($size, $retstring = null) {
-        	// adapted from code at http://aidanlister.com/repos/v/function.size_readable.php
-	       $sizes = array('bytes', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
-
-	       if ($retstring === null) { $retstring = '%01.2f %s'; }
-
-		$lastsizestring = end($sizes);
-
-		foreach ($sizes as $sizestring) {
-	       	if ($size < 1024) { break; }
-	           if ($sizestring != $lastsizestring) { $size /= 1024; }
-	       }
-	       if ($sizestring == $sizes[0]) { $retstring = '%01d %s'; } // Bytes aren't normally fractional
-	       return sprintf($retstring, $size, $sizestring);
-	}
-	
-	public function getReadableTime($time) {
-		$ret = $time;
-		$formatter = 0;
+	/**
+	 * Formats time
+	 *
+	 * @param float $time        	
+	 */
+	public function getReadableTime($time)
+	{
 		$formats = array('ms', 's', 'm');
-		if($time >= 1000 && $time < 60000) {
-			$formatter = 1;
-			$ret = ($time / 1000);
-		}
-		if($time >= 60000) {
+		if (abs($time) >= 60) {
 			$formatter = 2;
-			$ret = ($time / 1000) / 60;
+			$time /= 60;
+		} elseif (abs($time) > 1) {
+			$formatter = 1;
+		} else {
+			$formatter = 0;
+			$time *= 1000;
 		}
-		$ret = number_format($ret,3,'.','') . ' ' . $formats[$formatter];
-		return $ret;
+		
+		return number_format($time, 3, '.', '') . ' ' . $formats[$formatter];
 	}
 	
-	/*---------------------------------------------------------
-	     DISPLAY TO THE SCREEN -- CALL WHEN CODE TERMINATING
-	-----------------------------------------------------------*/
-	
-	public function display($db = '') {
-		$this->db = $db;
+	/**
+	 * Display to the screen -- call when code terminating.
+	 */
+	public function render()
+	{
 		$this->gatherConsoleData();
 		$this->gatherFileData();
 		$this->gatherMemoryData();
 		$this->gatherQueryData();
 		$this->gatherSpeedData();
-		require_once($_SERVER['DOCUMENT_ROOT'].$this->config.'display.php');
-		displayPqp($this->output, $this->config);
+		
+		// TODO: Use Smarty to render $this->output
 	}
-	
+
 }
 
 ?>

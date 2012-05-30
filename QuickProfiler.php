@@ -15,7 +15,8 @@
 
 - - - - - - - - - - - - - - - - - - - - - */
 
-class PhpQuickProfiler {
+class QuickProfiler
+{
 	
 	public $output = array();
 	public $config = '';

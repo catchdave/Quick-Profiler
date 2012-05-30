@@ -30,18 +30,18 @@ class QuickProfiler
 	public function gatherConsoleData()
 	{
 		$logs = Console::getLogs();
-		if ($logs ['console']) {
-			foreach ( $logs ['console'] as $key => $log ) {
-				if ($log ['type'] == 'log') {
-					$logs ['console'] [$key] ['data'] = print_r($log ['data'], true);
-				} elseif ($log ['type'] == 'memory') {
-					$logs ['console'] [$key] ['data'] = $this->getReadableFileSize($log ['data']);
-				} elseif ($log ['type'] == 'speed') {
-					$logs ['console'] [$key] ['data'] = $this->getReadableTime($log ['data'] - $this->startTime);
+		if ($logs['console']) {
+			foreach ( $logs['console'] as $key => $log ) {
+				if ($log['type'] == 'log') {
+					$logs['console'][$key]['data'] = print_r($log['data'], true);
+				} elseif ($log['type'] == 'memory') {
+					$logs['console'][$key]['data'] = $this->getReadableFileSize($log['data']);
+				} elseif ($log['type'] == 'speed') {
+					$logs['console'][$key]['data'] = $this->getReadableTime($log['data'] - $this->startTime);
 				}
 			}
 		}
-		$this->output ['logs'] = $logs;
+		$this->output['logs'] = $logs;
 	}
 	
 	/**
@@ -59,19 +59,19 @@ class QuickProfiler
 		
 		foreach ( $files as $key => $file ) {
 			$size = filesize($file);
-			$fileList [] = array(
+			$fileList[] = array(
 					'name' => $file,
 					'size' => $this->getReadableFileSize($size) 
 			);
-			$fileTotals ['size'] += $size;
-			if ($size > $fileTotals ['largest'])
-				$fileTotals ['largest'] = $size;
+			$fileTotals['size'] += $size;
+			if ($size > $fileTotals['largest'])
+				$fileTotals['largest'] = $size;
 		}
 		
-		$fileTotals ['size'] = $this->getReadableFileSize($fileTotals ['size']);
-		$fileTotals ['largest'] = $this->getReadableFileSize($fileTotals ['largest']);
-		$this->output ['files'] = $fileList;
-		$this->output ['fileTotals'] = $fileTotals;
+		$fileTotals['size'] = $this->getReadableFileSize($fileTotals['size']);
+		$fileTotals['largest'] = $this->getReadableFileSize($fileTotals['largest']);
+		$this->output['files'] = $fileList;
+		$this->output['fileTotals'] = $fileTotals;
 	}
 	
 	/**
@@ -80,9 +80,9 @@ class QuickProfiler
 	public function gatherMemoryData()
 	{
 		$memoryTotals = array();
-		$memoryTotals ['used'] = $this->getReadableFileSize(memory_get_peak_usage());
-		$memoryTotals ['total'] = ini_get('memory_limit');
-		$this->output ['memoryTotals'] = $memoryTotals;
+		$memoryTotals['used'] = $this->getReadableFileSize(memory_get_peak_usage());
+		$memoryTotals['total'] = ini_get('memory_limit');
+		$this->output['memoryTotals'] = $memoryTotals;
 	}
 	
 	/**
@@ -91,13 +91,13 @@ class QuickProfiler
 	public function gatherQueryData()
 	{
 		$queryTotals = array();
-		$queryTotals ['count'] = 0;
-		$queryTotals ['time'] = 0;
+		$queryTotals['count'] = 0;
+		$queryTotals['time'] = 0;
 		$queries = array();
 		
-		$queryTotals ['time'] = $this->getReadableTime($queryTotals ['time']);
-		$this->output ['queries'] = $queries;
-		$this->output ['queryTotals'] = $queryTotals;
+		$queryTotals['time'] = $this->getReadableTime($queryTotals['time']);
+		$this->output['queries'] = $queries;
+		$this->output['queryTotals'] = $queryTotals;
 	}
 	
 	/**
@@ -106,9 +106,9 @@ class QuickProfiler
 	public function gatherSpeedData()
 	{
 		$speedTotals = array();
-		$speedTotals ['total'] = $this->getReadableTime(microtime(true) - $this->startTime);
-		$speedTotals ['allowed'] = ini_get('max_execution_time');
-		$this->output ['speedTotals'] = $speedTotals;
+		$speedTotals['total'] = $this->getReadableTime(microtime(true) - $this->startTime);
+		$speedTotals['allowed'] = ini_get('max_execution_time');
+		$this->output['speedTotals'] = $speedTotals;
 	}
 	
 	/**
@@ -131,7 +131,7 @@ class QuickProfiler
 				$size /= 1024;
 			}
 		}
-		if ($sizeString == $sizes [0]) {
+		if ($sizeString == $sizes[0]) {
 			$retString = '%01d %s'; // Bytes aren't normally fractional
 		} else {
 			$retString = '%01.2f %s';

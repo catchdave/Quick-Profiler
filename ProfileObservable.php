@@ -17,9 +17,9 @@ interface ProfileObservable
 	/**
 	 * Add an event to the profiler
 	 *
-	 * @param array $details        	
-	 * @param float $time        	
-	 * @param integer $memory        	
+	 * @param array $event - Array of event details
+	 * @param float $time - Start time of event
+	 * @param integer $memory - Start memory usage of event
 	 */
-	public function addProfileEvent(array $details, $time, $memory);
+	public function addProfileEvent(array $event, $timeStart, $memoryStart);
 }

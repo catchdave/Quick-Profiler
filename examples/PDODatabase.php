@@ -46,6 +46,10 @@ class PDODatabase extends PDO implements ProfileObservable
 	{
 		static $duplicates = array();
 		
+		if (!isset(self::$profiler)) {
+			return; // no profiler attached
+		}
+		
 		$timeUsed = microtime(true) - $memoryStart;
 		$memoryUsed = memory_get_usage(true) - $memoryStart;
 		$hash = md5($event['sql']);

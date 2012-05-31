@@ -11,10 +11,10 @@
 class QuickProfiler
 {
 	/**
-	 * Output buffer
+	 * Profile data
 	 * @var array
 	 */
-	public $output = array();
+	protected $data = array();
 	
 	/**
 	 * @param float $startTime        	
@@ -25,9 +25,44 @@ class QuickProfiler
 	}
 	
 	/**
+	 * Display to the screen -- call when code terminating.
+	 */
+	public function render()
+	{
+		$this->gatherConsoleData();
+		$this->gatherFileData();
+		$this->gatherMemoryData();
+		$this->gatherSpeedData();
+		
+		// TODO: Use Smarty to render $this->data
+	}
+	
+	/**
+	 * Add a profile event from an external class that is being observed
+	 * by this profiler.
+	 * 
+	 * @param string $type
+	 * @param array $event
+	 */
+	public function addEvent($type, array $event)
+	{
+		if (!empty($event['memory'])) {
+			$event['memory'] = $this->getReadableFileSize($event['memory']);
+		}
+		if (!empty($event['time'])) {
+			$event['time'] = $this->getReadableTime($event['time']);
+		}
+		
+		$this->data[$type][] = $event;
+		
+		// TODO: Standardise types and separate totals from data
+		$this->data[$type.'Totals']++;
+	}
+	
+	/**
 	 * Format the different types of logs
 	 */
-	public function gatherConsoleData()
+	protected function gatherConsoleData()
 	{
 		$logs = Console::getLogs();
 		if ($logs['console']) {
@@ -41,13 +76,13 @@ class QuickProfiler
 				}
 			}
 		}
-		$this->output['logs'] = $logs;
+		$this->data['logs'] = $logs;
 	}
 	
 	/**
 	 * Aggregate data on the files included
 	 */
-	public function gatherFileData()
+	protected function gatherFileData()
 	{
 		$files = get_included_files();
 		$fileList = array();
@@ -56,7 +91,7 @@ class QuickProfiler
 			'size' => 0,
 			'largest' => 0
 		);
-		
+	
 		foreach ($files as $key => $file) {
 			$size = filesize($file);
 			$fileList[] = array(
@@ -67,62 +102,47 @@ class QuickProfiler
 			if ($size > $fileTotals['largest'])
 				$fileTotals['largest'] = $size;
 		}
-		
+	
 		$fileTotals['size'] = $this->getReadableFileSize($fileTotals['size']);
 		$fileTotals['largest'] = $this->getReadableFileSize($fileTotals['largest']);
-		$this->output['files'] = $fileList;
-		$this->output['fileTotals'] = $fileTotals;
+		$this->data['files'] = $fileList;
+		$this->data['fileTotals'] = $fileTotals;
 	}
 	
 	/**
 	 * Memory usage and memory available
 	 */
-	public function gatherMemoryData()
+	protected function gatherMemoryData()
 	{
 		$memoryTotals = array();
 		$memoryTotals['used'] = $this->getReadableFileSize(memory_get_peak_usage());
 		$memoryTotals['total'] = ini_get('memory_limit');
-		$this->output['memoryTotals'] = $memoryTotals;
-	}
-	
-	/**
-	 * Query data -- database object with logging required
-	 */
-	public function gatherQueryData()
-	{
-		$queryTotals = array();
-		$queryTotals['count'] = 0;
-		$queryTotals['time'] = 0;
-		$queries = array();
-		
-		$queryTotals['time'] = $this->getReadableTime($queryTotals['time']);
-		$this->output['queries'] = $queries;
-		$this->output['queryTotals'] = $queryTotals;
+		$this->data['memoryTotals'] = $memoryTotals;
 	}
 	
 	/**
 	 * Speed data for entire page load
 	 */
-	public function gatherSpeedData()
+	protected function gatherSpeedData()
 	{
 		$speedTotals = array();
 		$speedTotals['total'] = $this->getReadableTime(microtime(true) - $this->startTime);
 		$speedTotals['allowed'] = ini_get('max_execution_time');
-		$this->output['speedTotals'] = $speedTotals;
+		$this->data['speedTotals'] = $speedTotals;
 	}
-	
+
 	/**
 	 * Adapted from code at
 	 * http://aidanlister.com/repos/v/function.size_readable.php
 	 *
-	 * @param integer $size        	
-	 * @param unknown_type $retString        	
+	 * @param integer $size
+	 * @param unknown_type $retString
 	 */
-	public function getReadableFileSize($size, $retString = null)
+	protected function getReadableFileSize($size, $retString = null)
 	{
 		$sizes = array('bytes', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
 		$lastSizeString = end($sizes);
-		
+	
 		foreach ($sizes as $sizeString) {
 			if ($size < 1024) {
 				break;
@@ -142,9 +162,9 @@ class QuickProfiler
 	/**
 	 * Formats time
 	 *
-	 * @param float $time        	
+	 * @param float $time
 	 */
-	public function getReadableTime($time)
+	protected function getReadableTime($time)
 	{
 		$formats = array('ms', 's', 'm');
 		if (abs($time) >= 60) {
@@ -156,24 +176,9 @@ class QuickProfiler
 			$formatter = 0;
 			$time *= 1000;
 		}
-		
+	
 		return number_format($time, 3, '.', '') . ' ' . $formats[$formatter];
 	}
-	
-	/**
-	 * Display to the screen -- call when code terminating.
-	 */
-	public function render()
-	{
-		$this->gatherConsoleData();
-		$this->gatherFileData();
-		$this->gatherMemoryData();
-		$this->gatherQueryData();
-		$this->gatherSpeedData();
-		
-		// TODO: Use Smarty to render $this->output
-	}
-
 }
 
 ?>

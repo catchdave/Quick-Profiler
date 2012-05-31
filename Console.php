@@ -125,18 +125,27 @@ class Console
 	}
 	
 	/**
-	 * Log a php exception object
+	 * Log an error, optionally with an exception.
 	 *
-	 * @param Exception $exception        	
-	 * @param string $message        	
+	 * @param string $message
+	 * @param Exception $exception - If not provided will use debug backtrace
 	 */
-	public function logError(Exception $exception, $message)
+	public function logError($message, Exception $exception = null)
 	{
+		if ($exception) {
+			$line = $exception->getLine();
+			$file = $exception->getFile();
+		}
+		else {
+			$backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+			$line = $backtrace[0]['line'];
+			$file = $backtrace[0]['file'];
+		}
 		$logItem = array(
 			'data' => $message,
 			'type' => self::ERROR,
-			'file' => $exception->getFile(),
-			'line' => $exception->getLine() 
+			'file' => $file,
+			'line' => $line 
 		);
 		self::addToConsoleAndIncrement($logItem);
 	}
@@ -183,4 +192,3 @@ class Console
 
 }
 
-?>

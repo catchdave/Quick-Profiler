@@ -16,10 +16,27 @@ class Console
 	static $instance = null;
 
 	/**
+	 * 
 	 * @var array
 	 */
-	protected $logs = array();
-
+	protected $logs;
+	
+	/**
+	 * @var float
+	 */
+	protected $currentTime;
+	
+	/**#@+
+	 * Log types
+	 * 
+	 * @var string
+	 */
+	const LOG    = 'log';
+	const ERROR  = 'error';
+	const SPEED  = 'speed';
+	const MEMORY = 'memory';
+	/**#@-*/
+	
 	/**
 	 * Singleton
 	 */
@@ -42,14 +59,27 @@ class Console
 	
 	public function __construct()
 	{
+		$this->setCurrentTime(microtime(true));
 		$this->logs = array(
-			'console'     => array(),
-			'logCount'    => 0,
-			'memoryCount' => 0,
-			'errorCount'  => 0,
-			'speedCount'  => 0 
+			'console' => array(),
+			'counts'  => array(
+				self::LOG    => 0,
+				self::ERROR  => 0,
+				self::MEMORY => 0,
+				self::SPEED  => 0,
+			)
 		);
 	}
+	
+	/**
+	 * Set the time
+	 * 
+	 * @param float $time
+	 */
+	public function setCurrentTime($time)
+	{
+		$this->currentTime = $time;
+	} 
 	
 	/**
 	 * Log a variable to console
@@ -60,30 +90,38 @@ class Console
 	{
 		$logItem = array(
 			'data' => $data,
-			'type' => 'log' 
+			'type' => self::LOG
 		);
-		self::addToConsoleAndIncrement('logCount', $logItem);
+		self::addToConsoleAndIncrement($logItem);
 	}
 	
 	/**
 	 * Log memory usage of variable or entire script
 	 *
-	 * @param unknown_type $object        	
-	 * @param unknown_type $name        	
+	 * @param mixed $object
+	 * @param string $name
 	 */
 	public function logMemory($object = false, $name = 'PHP')
 	{
-		$memory = memory_get_usage();
-		if ($object) {
-			$memory = strlen(serialize($object));
-		}
+		$type = null;
+	    if (is_null($object)) {
+	      $memory = memory_get_usage(true);
+	    }
+	    elseif (is_string($object)) {
+	      $memory = strlen($object);
+	      $type = 'string';
+	    }
+	    else {
+	      $memory = strlen(serialize($object));
+	      $type = is_object($object) ? get_class($object) : gettype($object);
+	    }
 		$logItem = array(
 			'data' => $memory,
-			'type' => 'memory',
+			'type' => self::MEMORY,
 			'name' => $name,
-			'dataType' => is_object($object) ? get_class($object) : gettype($object) 
+			'dataType' => $type
 		);
-		self::addToConsoleAndIncrement('memoryCount', $logItem);
+		self::addToConsoleAndIncrement($logItem);
 	}
 	
 	/**
@@ -96,38 +134,43 @@ class Console
 	{
 		$logItem = array(
 			'data' => $message,
-			'type' => 'error',
+			'type' => self::ERROR,
 			'file' => $exception->getFile(),
 			'line' => $exception->getLine() 
 		);
-		self::addToConsoleAndIncrement('errorCount', $logItem);
+		self::addToConsoleAndIncrement($logItem);
 	}
 	
 	/**
-	 * Point in time speed snapshot
+	 * Point in time speed snapshot. Uses last point in time
+	 * or optionally you can specify amount.
 	 * 
-	 * @param unknown_type $name        	
+	 * @param string $name
+	 * @param float $timeTaken - Optional amount of time taken        	
 	 */
-	public function logSpeed($name = 'Point in Time')
+	public function logSpeed($name = 'Point in Time', $timeTaken = null)
 	{
+		if (is_null($timeTaken)) {
+			$timeTaken = microtime(true) - $this->currentTime;
+		}
+		$this->currentTime = microtime(true);
 		$logItem = array(
 			'data' => microtime(true),
-			'type' => 'speed',
+			'type' => self::SPEED,
 			'name' => $name 
 		);
-		self::addToConsoleAndIncrement('speedCount', $logItem);
+		self::addToConsoleAndIncrement($logItem);
 	}
 	
 	/**
 	 * Return & modify logs
 	 *
-	 * @param unknown_type $log        	
-	 * @param unknown_type $item        	
+	 * @param array $item
 	 */
-	public function addToConsoleAndIncrement($log, $item)
+	public function addToConsoleAndIncrement(array $item)
 	{
 		$this->logs['console'][] = $item;
-		$this->logs[$log] += 1;
+		$this->logs['counts'][$item['type']] += 1;
 	}
 	
 	/**

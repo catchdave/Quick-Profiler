@@ -52,16 +52,16 @@ class QuickProfiler
 		$files = get_included_files();
 		$fileList = array();
 		$fileTotals = array(
-				'count' => count($files),
-				'size' => 0,
-				'largest' => 0 
+			'count' => count($files),
+			'size' => 0,
+			'largest' => 0
 		);
 		
-		foreach ( $files as $key => $file ) {
+		foreach ($files as $key => $file) {
 			$size = filesize($file);
 			$fileList[] = array(
-					'name' => $file,
-					'size' => $this->getReadableFileSize($size) 
+				'name' => $file,
+				'size' => $this->getReadableFileSize($size)
 			);
 			$fileTotals['size'] += $size;
 			if ($size > $fileTotals['largest'])
@@ -123,7 +123,7 @@ class QuickProfiler
 		$sizes = array('bytes', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
 		$lastSizeString = end($sizes);
 		
-		foreach ( $sizes as $sizeString ) {
+		foreach ($sizes as $sizeString) {
 			if ($size < 1024) {
 				break;
 			}

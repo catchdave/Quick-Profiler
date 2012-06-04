@@ -8,19 +8,19 @@
 				<h4>Console</h4>
 			</td>
 			<td class="blue" onclick="changeTab('speed');">
-				<var>{$speedTotals.total}</var>
+				<var>{$totals.speed.total}</var>
 				<h4>Load Time</h4>
 			</td>
 			<td class="purple" onclick="changeTab('database');">
-				<var>{$databaseTotals.count} Queries</var>
+				<var>{$totals.database.count} Queries</var>
 				<h4>Database</h4>
 			</td>
 			<td class="orange" onclick="changeTab('memory');">
-				<var>{$memoryTotals.used}</var>
+				<var>{$totals.memory.used}</var>
 				<h4>Memory Used</h4>
 			</td>
 			<td class="red" onclick="changeTab('files');">
-				<var>{$files|@count} Files</var>
+				<var>{$totals.file.count} Files</var>
 				<h4>Included</h4>
 			</td>
 		</tr>
@@ -66,8 +66,8 @@
 			<h3>This panel has no log items.</h3>
 		{else}
 			<table class='side' cellspacing='0'>
-				<tr><td><var>{$speedTotals.total}</var><h4>Load Time</h4></td></tr>
-				<tr><td class='alt'><var>{$speedTotals.allowed} s</var> <h4>Max Execution Time</h4></td></tr>
+				<tr><td><var>{$totals.speed.total}</var><h4>Load Time</h4></td></tr>
+				<tr><td class='alt'><var>{$totals.speed.allowed} s</var> <h4>Max Execution Time</h4></td></tr>
 			</table>
 		
 			<table class='main' cellspacing='0'>
@@ -83,33 +83,33 @@
 	</div>
 	
 	<div id='pqp-database' class='pqp-box'>
-		{if $databaseTotals.count == 0}
+		{if $totals.database.count == 0}
 			<h3>This panel has no log items.</h3>
 		{else}
 			<table class='side' cellspacing='0'>
-			<tr><td><var>{$databaseTotals.count}</var><h4>Total Queries</h4></td></tr>
-			<tr><td class='alt'><var>{$databaseTotals.time}</var> <h4>Total Time</h4></td></tr>
-			<tr><td><var>0</var> <h4>Duplicates</h4></td></tr>
+			<tr><td><var>{$totals.database.count}</var><h4>Total Queries</h4></td></tr>
+			<tr><td class='alt'><var>{$totals.database.time}</var> <h4>Total Time</h4></td></tr>
+			<tr><td><var>{$totals.database.duplicates}</var> <h4>Duplicates</h4></td></tr>
 			</table>
 			
-				<table class='main' cellspacing='0'>
-				{foreach from=$database item=query}
-						<tr>
-							<td class="{cycle values="alt,"}">
-								{$query.sql}
-								{if $query.explain}
-								<em>
-									Possible keys: <b>{$query.explain.possible_keys}</b> &middot; 
-									Key Used: <b>{$query.explain.key}</b> &middot; 
-									Type: <b>{$query.explain.type}</b> &middot; 
-									Rows: <b>{$query.explain.rows}</b> &middot; 
-									Speed: <b>{$query.time}</b>
-								</em>
-								{/if}
-							</td>
-						</tr>
-				{/foreach}
-				</table>
+			<table class='main' cellspacing='0'>
+			{foreach from=$database item=query}
+					<tr>
+						<td class="{cycle values="alt,"}">
+							{$query.sql}
+							{if $query.explain}
+							<em>
+								Possible keys: <b>{$query.explain.possible_keys}</b> &middot; 
+								Key Used: <b>{$query.explain.key}</b> &middot; 
+								Type: <b>{$query.explain.type}</b> &middot; 
+								Rows: <b>{$query.explain.rows}</b> &middot; 
+								Speed: <b>{$query.time}</b>
+							</em>
+							{/if}
+						</td>
+					</tr>
+			{/foreach}
+			</table>
 		{/if}
 	</div>
 
@@ -118,8 +118,8 @@
 			<h3>This panel has no log items.</h3>
 		{else}
 			<table class='side' cellspacing='0'>
-				<tr><td><var>{$memoryTotals.used}</var><h4>Used Memory</h4></td></tr>
-				<tr><td class='alt'><var>{$memoryTotals.total}</var> <h4>Total Available</h4></td></tr>
+				<tr><td><var>{$totals.memory.used}</var><h4>Used Memory</h4></td></tr>
+				<tr><td class='alt'><var>{$totals.memory.total}</var> <h4>Total Available</h4></td></tr>
 			</table>
 		
 			<table class='main' cellspacing='0'>
@@ -136,9 +136,9 @@
 
 	<div id='pqp-files' class='pqp-box'>
 			<table class='side' cellspacing='0'>
-				<tr><td><var>{$fileTotals.count}</var><h4>Total Files</h4></td></tr>
-				<tr><td class='alt'><var>{$fileTotals.size}</var> <h4>Total Size</h4></td></tr>
-				<tr><td><var>{$fileTotals.largest}</var> <h4>Largest</h4></td></tr>
+				<tr><td><var>{$totals.file.count}</var><h4>Total Files</h4></td></tr>
+				<tr><td class='alt'><var>{$totals.file.size}</var> <h4>Total Size</h4></td></tr>
+				<tr><td><var>{$totals.file.largest}</var> <h4>Largest</h4></td></tr>
 			</table>
 			<table class='main' cellspacing='0'>
 				{foreach from=$files item=file}

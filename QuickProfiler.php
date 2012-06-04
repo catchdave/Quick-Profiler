@@ -84,29 +84,62 @@ class QuickProfiler
 	 */
 	protected function gatherFileData()
 	{
-		$files = get_included_files();
 		$fileList = array();
-		$fileTotals = array(
-			'count' => count($files),
-			'size' => 0,
-			'largest' => 0
-		);
+		$largest = $totalSize = 0;
 	
-		foreach ($files as $key => $file) {
-			$size = filesize($file);
+		$files = get_included_files();
+		foreach ($files as $curFile) {
+			$size = filesize($curFile);
 			$fileList[] = array(
-				'name' => $file,
+				'name' => $curFile,
 				'size' => $this->getReadableFileSize($size)
 			);
-			$fileTotals['size'] += $size;
-			if ($size > $fileTotals['largest'])
-				$fileTotals['largest'] = $size;
+
+			$totalSize += $size;
+			$largest = max($largest, $size);
 		}
 	
-		$fileTotals['size'] = $this->getReadableFileSize($fileTotals['size']);
-		$fileTotals['largest'] = $this->getReadableFileSize($fileTotals['largest']);
 		$this->data['files'] = $fileList;
-		$this->data['fileTotals'] = $fileTotals;
+		$this->data['fileTotals'] = array(
+			'size'    => $this->getReadableFileSize($totalSize),
+			'largest' => $this->getReadableFileSize($largest),
+			'count'   => count($files)
+		);
+	}
+
+	/**
+	 * Aggregate classes defined
+	 */
+	protected function gatherClassData()
+	{
+		$classList = array();
+		$largest = $totalLines = $count = 0;
+	
+		// Get user defined classes
+		foreach (get_defined_classes() as $className) {
+			$reflect = new ReflectionClass($className);
+			if (!$reflect->isUserDefined()) {
+				continue; // skip built-in classes
+			}
+
+			// Get approx lines of code (includes comments)
+			$lines = $reflect->getEndLine() - $reflect->getStartLine();
+			$largest = max($largest, $lines);
+			$totalLines += $lines;	
+			$count++;
+
+			$classList[] = array(
+				'name'  => $className,
+				'lines' => number_format($lines)
+			);
+		}
+
+		$this->data['classes'] = $classList;
+		$this->data['classTotals'] = array(
+			'largest' => number_format($largest),
+			'lines'   => number_format($totalLines),
+			'count'   => $count
+		);
 	}
 	
 	/**

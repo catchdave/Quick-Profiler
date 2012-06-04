@@ -2,7 +2,6 @@
 
 /**
  * Quick Profiler Console Class.
- * This class serves as a wrapper around a global php variable, pqp_logs, that we have created.
  * 
  * @author Ryan Campbell. April 22, 2009
  * @author Modifed by David Rochwerger <catch.dave@gmail.com>

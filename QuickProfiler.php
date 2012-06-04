@@ -17,6 +17,12 @@ class QuickProfiler
 	protected $data = array();
 	
 	/**
+	 * Totals of data
+	 * @var array
+	 */
+	protected $totals = array();
+	
+	/**
 	 * @param float $startTime        	
 	 */
 	public function __construct($startTime = null)
@@ -54,9 +60,23 @@ class QuickProfiler
 		}
 		
 		$this->data[$type][] = $event;
-		
-		// TODO: Standardise types and separate totals from data
-		$this->data[$type.'Totals']++;
+		$this->increment($type, 'count');
+	}
+	
+	/**
+	 * Increments an arbitray total.
+	 * 
+	 * @param string $type
+	 * @param string $key
+	 * @param integer $value
+	 */
+	public function increment($type, $key, $value = 1)
+	{
+	  if (isset($this->totals[$type][$key])) {
+	    $this->totals[$type][$key] += $value;
+	  } else {
+	    $this->totals[$type][$key] = $value;
+	  }
 	}
 	
 	/**
@@ -100,7 +120,7 @@ class QuickProfiler
 		}
 	
 		$this->data['files'] = $fileList;
-		$this->data['fileTotals'] = array(
+		$this->totals['file'] = array(
 			'size'    => $this->getReadableFileSize($totalSize),
 			'largest' => $this->getReadableFileSize($largest),
 			'count'   => count($files)
@@ -134,8 +154,8 @@ class QuickProfiler
 			);
 		}
 
-		$this->data['classes'] = $classList;
-		$this->data['classTotals'] = array(
+		$this->data['class'] = $classList;
+		$this->totals['class'] = array(
 			'largest' => number_format($largest),
 			'lines'   => number_format($totalLines),
 			'count'   => $count
@@ -150,7 +170,7 @@ class QuickProfiler
 		$memoryTotals = array();
 		$memoryTotals['used'] = $this->getReadableFileSize(memory_get_peak_usage());
 		$memoryTotals['total'] = ini_get('memory_limit');
-		$this->data['memoryTotals'] = $memoryTotals;
+		$this->totals['memory'] = $memoryTotals;
 	}
 	
 	/**
@@ -161,7 +181,7 @@ class QuickProfiler
 		$speedTotals = array();
 		$speedTotals['total'] = $this->getReadableTime(microtime(true) - $this->startTime);
 		$speedTotals['allowed'] = ini_get('max_execution_time');
-		$this->data['speedTotals'] = $speedTotals;
+		$this->totals['speed'] = $speedTotals;
 	}
 
 	/**

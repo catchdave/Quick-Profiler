@@ -11,8 +11,8 @@
 				<var>{$speedTotals.total}</var>
 				<h4>Load Time</h4>
 			</td>
-			<td class="purple" onclick="changeTab('queries');">
-				<var>{$queryTotals.count} Queries</var>
+			<td class="purple" onclick="changeTab('database');">
+				<var>{$databaseTotals.count} Queries</var>
 				<h4>Database</h4>
 			</td>
 			<td class="orange" onclick="changeTab('memory');">
@@ -82,18 +82,18 @@
 		{/if}
 	</div>
 	
-	<div id='pqp-queries' class='pqp-box'>
-		{if $queryTotals.count == 0}
+	<div id='pqp-database' class='pqp-box'>
+		{if $databaseTotals.count == 0}
 			<h3>This panel has no log items.</h3>
 		{else}
 			<table class='side' cellspacing='0'>
-			<tr><td><var>{$queryTotals.count}</var><h4>Total Queries</h4></td></tr>
-			<tr><td class='alt'><var>{$queryTotals.time}</var> <h4>Total Time</h4></td></tr>
+			<tr><td><var>{$databaseTotals.count}</var><h4>Total Queries</h4></td></tr>
+			<tr><td class='alt'><var>{$databaseTotals.time}</var> <h4>Total Time</h4></td></tr>
 			<tr><td><var>0</var> <h4>Duplicates</h4></td></tr>
 			</table>
 			
 				<table class='main' cellspacing='0'>
-				{foreach from=$queries item=query}
+				{foreach from=$database item=query}
 						<tr>
 							<td class="{cycle values="alt,"}">
 								{$query.sql}

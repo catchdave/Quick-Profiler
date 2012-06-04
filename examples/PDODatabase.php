@@ -37,6 +37,7 @@ class PDODatabase extends PDO implements ProfileObservable
 	public function attachProfiler(QuickProfiler $profiler)
 	{
 		self::$profiler = $profiler;
+		self::$profiler->increment('database', 'duplicates', 0); // initialize duplicate count
 	}
 	
 	/**
@@ -63,6 +64,9 @@ class PDODatabase extends PDO implements ProfileObservable
 		// Keep track of current query to mark as duplicate
 		$duplicates[$hash] = true;
 		
+		if ($event['duplicate']) {
+		  self::$profiler->increment('database', 'duplicates');
+		}
 		self::$profiler->addEvent('database', $event);
 	}
 	

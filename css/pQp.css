@@ -59,11 +59,68 @@
 
 /* ----- Colors ----- */
 
-#pqp-container .green{color:#588E13 !important;}
-#pqp-container .blue{color:#3769A0 !important;}
-#pqp-container .purple{color:#953FA1 !important;}
-#pqp-container .orange{color:#D28C00 !important;}
-#pqp-container .red{color:#B72F09 !important;}
+/* Green Theme */
+#pqp-metrics .green {
+	color: #588E13 !important;
+}
+.pqp-box.green .side {
+	background-color: #588E13;
+}
+.pqp-box.green .side td.alt {
+	background-color: #47740D;
+}
+
+/* Purple Theme */
+#pqp-metrics .purple {
+	color: #953FA1 !important;
+}
+.pqp-box.purple .side {
+	background-color:#953FA1;
+	border-bottom:1px solid #662A6E;
+	border-left:1px solid #662A6E;
+}
+.pqp-box.purple .side td.alt {
+	background-color:#7B3384;
+}
+
+/* Blue Theme */
+#pqp-metrics .blue {
+	color: #3769A0 !important;
+}
+.pqp-box.blue .side{
+	background-color:#3769A0;
+}
+.pqp-box.blue .side td.alt {
+	background-color:#2B5481;
+	border-bottom:1px solid #1E3C5C;
+	border-left:1px solid #1E3C5C;
+}
+
+/* Orange Theme */
+#pqp-metrics .orange {
+	color: #D28C00 !important;
+}
+.pqp-box.orange .side {
+	background-color:#C48200;
+}
+.pqp-box.orange .side td.alt {
+	background-color:#AC7200;
+	border-bottom:1px solid #865900;
+	border-left:1px solid #865900;
+}
+
+/* Red Theme */
+#pqp-metrics .red {
+	color: #B72F09 !important;
+}
+.pqp-box.red .side{
+	background-color:#B72F09;
+	border-bottom:1px solid #7C1F00;
+	border-left:1px solid #7C1F00;
+}
+.pqp-box.red .side td.alt{
+	background-color:#9B2700;
+}
 
 /* ----- Logic ----- */
 
@@ -196,7 +253,7 @@
 
 /* ----- Side ----- */
 
-#pqp-container .side{
+#pqp-container .side {
 	float:left;
 	width:20%;
 	background:#000;
@@ -204,6 +261,7 @@
 	border-bottom-left-radius: 30px; -moz-border-radius-bottomleft: 30px; -webkit-border-bottom-left-radius: 30px;
 	text-align:center;
 }
+
 #pqp-container .side td{
 	padding:10px 0 5px 0;
 	background:url(../images/side.png) repeat-y right;
@@ -234,7 +292,6 @@
 	background:#D28C00;
 	border-bottom:1px solid #9C6800;
 	border-left:1px solid #9C6800;
-	border-bottom-left-radius: 30px; -moz-border-radius-bottomleft: 30px; -webkit-border-bottom-left-radius: 30px;
 }
 #pqp-console .side td.alt4{
 	background-color:#3769A0;
@@ -292,34 +349,15 @@
 }
 
 /* ----- Speed ----- */
-
 #pqp-speed .side td{
 	padding:12px 0;
 }
-#pqp-speed .side{
-	background-color:#3769A0;
-}
-#pqp-speed .side td.alt{
-	background-color:#2B5481;
-	border-bottom:1px solid #1E3C5C;
-	border-left:1px solid #1E3C5C;
-	border-bottom-left-radius: 30px; -moz-border-radius-bottomleft: 30px; -webkit-border-bottom-left-radius: 30px;
-}
 
 /* ----- Database ----- */
-
-#pqp-database .side{
-	background-color:#953FA1;
-	border-bottom:1px solid #662A6E;
-	border-left:1px solid #662A6E;
-}
-#pqp-database .side td.alt{
-	background-color:#7B3384;
-}
-#pqp-database .main b{
+#pqp-database .main b {
 	float:none;
 }
-#pqp-database .main em{
+#pqp-database .main em {
 	display:block;
 	padding:2px 0 0 0;
 	font-style:normal;
@@ -327,30 +365,13 @@
 }
 
 /* ----- Memory ----- */
-
 #pqp-memory .side td{
 	padding:12px 0;
-}
-#pqp-memory .side{
-	background-color:#C48200;
-}
-#pqp-memory .side td.alt{
-	background-color:#AC7200;
-	border-bottom:1px solid #865900;
-	border-left:1px solid #865900;
-	border-bottom-left-radius: 30px; -moz-border-radius-bottomleft: 30px; -webkit-border-bottom-left-radius: 30px;
 }
 
 /* ----- Files ----- */
 
-#pqp-files .side{
-	background-color:#B72F09;
-	border-bottom:1px solid #7C1F00;
-	border-left:1px solid #7C1F00;
-}
-#pqp-files .side td.alt{
-	background-color:#9B2700;
-}
+
 
 /* ----- Footer ----- */
 

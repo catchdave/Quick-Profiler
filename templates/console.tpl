@@ -1,6 +1,6 @@
 <script type="text/javascript" src="quick-profiler.js"></script>
-<div id="pqp-container" class="pQp" style="display:none">
-<div id="pQp" class="console">
+<div id="pqp-container" style="display:none">
+<div id="pqp-inner" class="console">
 	<table id="pqp-metrics" cellspacing="0">
 		<tr>
 			<td class="green" onclick="changeTab('console');">

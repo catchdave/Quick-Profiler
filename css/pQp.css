@@ -258,10 +258,11 @@
 	width:20%;
 	background:#000;
 	color:#fff;
-	border-bottom-left-radius: 30px; -moz-border-radius-bottomleft: 30px; -webkit-border-bottom-left-radius: 30px;
 	text-align:center;
 }
-
+#pqp-container .side, #pqp-container .side tr:last-child td:first-child {
+    border-bottom-left-radius: 30px; -webkit-border-bottom-left-radius: 30px; -moz-border-radius-bottomleft: 30px;
+}
 #pqp-container .side td{
 	padding:10px 0 5px 0;
 	background:url(../images/side.png) repeat-y right;

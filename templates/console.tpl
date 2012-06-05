@@ -3,30 +3,30 @@
 <div id="pqp-inner" class="console">
 	<table id="pqp-metrics" cellspacing="0">
 		<tr>
-			<td class="green" onclick="changeTab('console');">
+			<td class="green selected" onclick="PQP.changeTab('console');">
 				<var>{$logs.console|@count}</var>
 				<h4>Console</h4>
 			</td>
-			<td class="blue" onclick="changeTab('speed');">
+			<td class="blue" onclick="PQP.changeTab('speed');">
 				<var>{$totals.speed.total}</var>
 				<h4>Load Time</h4>
 			</td>
-			<td class="purple" onclick="changeTab('database');">
+			<td class="purple" onclick="PQP.changeTab('database');">
 				<var>{$totals.database.count} Queries</var>
 				<h4>Database</h4>
 			</td>
-			<td class="orange" onclick="changeTab('memory');">
+			<td class="orange" onclick="PQP.changeTab('memory');">
 				<var>{$totals.memory.used}</var>
 				<h4>Memory Used</h4>
 			</td>
-			<td class="red" onclick="changeTab('files');">
+			<td class="red" onclick="PQP.changeTab('files');">
 				<var>{$totals.file.count} Files</var>
 				<h4>Included</h4>
 			</td>
 		</tr>
 	</table>
 	
-	<div id='pqp-console' class='pqp-box'>
+	<div id='pqp-console' class='pqp-box selected'>
 		{if $logs.console|@count == 0}
 			<h3>This panel has no log items.</h3>
 		{else}
@@ -151,12 +151,10 @@
 		<tr>
 			<td class="credit">
 				<a href="http://particletree.com" target="_blank">
-				<strong>PHP</strong> 
-				<b class="green">Q</b><b class="blue">u</b><b class="purple">i</b><b class="orange">c</b><b class="red">k</b>
-				Profiler</a></td>
+				QuickProfiler</a></td>
 			<td class="actions">
-				<a href="#" onclick="toggleDetails();return false">Details</a>
-				<a class="heightToggle" href="#" onclick="toggleHeight();return false">Height</a>
+				<a href="#" onclick="PQP.toggleDetails();return false">Details</a>
+				<a class="heightToggle" href="#" onclick="PQP.toggleHeight();return false">Height</a>
 			</td>
 		</tr>
 	</table>

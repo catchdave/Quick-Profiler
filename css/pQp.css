@@ -70,14 +70,10 @@
 #pqp-inner, .pqp-box {
 	display:none;
 }
-#pqp-container .console, #pqp-container .speed, #pqp-container .database, #pqp-container .memory, #pqp-container .files{
+#pqp-inner .pqp-box.selected {
 	display:block !important;
 }
-#pqp-container .console #pqp-console, #pqp-container .speed #pqp-speed, #pqp-container .database #pqp-database, 
-#pqp-container .memory #pqp-memory, #pqp-container .files #pqp-files{
-	display:block;
-}
-.console td.green, .speed td.blue, .database td.purple, .memory td.orange, .files td.red{
+#pqp-metrics td.selected {
 	background:#222 !important;
 	border-bottom:6px solid #fff !important;
 	cursor:default !important;

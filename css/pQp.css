@@ -355,16 +355,16 @@
 }
 
 /* ----- Database ----- */
-#pqp-database .main em > b {
+.module-database .main em > b {
 	float:none;
 }
-#pqp-database .main em {
+.module-database .main em {
 	display:block;
 	padding:2px 0 0 0;
 	font-style:normal;
 	color:#aaa;
 }
-#pqp-database .main td > b {
+.module-database .main td > b {
 	color: #E6F387;
 }
 

@@ -355,7 +355,7 @@
 }
 
 /* ----- Database ----- */
-#pqp-database .main b {
+#pqp-database .main em > b {
 	float:none;
 }
 #pqp-database .main em {
@@ -363,6 +363,9 @@
 	padding:2px 0 0 0;
 	font-style:normal;
 	color:#aaa;
+}
+#pqp-database .main td > b {
+	color: #E6F387;
 }
 
 /* ----- Memory ----- */

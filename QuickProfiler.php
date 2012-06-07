@@ -120,7 +120,7 @@ class QuickProfiler
 		}
 	
 		$this->data['files'] = $fileList;
-		$this->totals['file'] = array(
+		$this->totals['files'] = array(
 			'size'    => $this->getReadableFileSize($totalSize),
 			'largest' => $this->getReadableFileSize($largest),
 			'count'   => count($files)
@@ -154,8 +154,8 @@ class QuickProfiler
 			);
 		}
 
-		$this->data['class'] = $classList;
-		$this->totals['class'] = array(
+		$this->data['classes'] = $classList;
+		$this->totals['classes'] = array(
 			'largest' => number_format($largest),
 			'lines'   => number_format($totalLines),
 			'count'   => $count

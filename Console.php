@@ -32,7 +32,7 @@ class Console
 	 */
 	const LOG    = 'log';
 	const ERROR  = 'error';
-	const SPEED  = 'speed';
+	const TIME  = 'time';
 	const MEMORY = 'memory';
 	/**#@-*/
 	
@@ -65,7 +65,7 @@ class Console
 				self::LOG    => 0,
 				self::ERROR  => 0,
 				self::MEMORY => 0,
-				self::SPEED  => 0,
+				self::TIME   => 0,
 			)
 		);
 	}
@@ -150,13 +150,13 @@ class Console
 	}
 	
 	/**
-	 * Point in time speed snapshot. Uses last point in time
+	 * Point in time snapshot. Uses last point in time
 	 * or optionally you can specify amount.
 	 * 
 	 * @param string $name
 	 * @param float $timeTaken - Optional amount of time taken        	
 	 */
-	public function logSpeed($name = 'Point in Time', $timeTaken = null)
+	public function logTime($name = 'Point in Time', $timeTaken = null)
 	{
 		if (is_null($timeTaken)) {
 			$timeTaken = microtime(true) - $this->currentTime;
@@ -164,7 +164,7 @@ class Console
 		$this->currentTime = microtime(true);
 		$logItem = array(
 			'data' => microtime(true),
-			'type' => self::SPEED,
+			'type' => self::TIME,
 			'name' => $name 
 		);
 		self::addToConsoleAndIncrement($logItem);

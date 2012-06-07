@@ -7,8 +7,8 @@
 				<var>{$logs.console|@count}</var>
 				<h4>Console</h4>
 			</td>
-			<td class="blue" onclick="PQP.changeTab('speed');">
-				<var>{$totals.speed.total}</var>
+			<td class="blue" onclick="PQP.changeTab('time');">
+				<var>{$totals.time.total}</var>
 				<h4>Load Time</h4>
 			</td>
 			<td class="purple" onclick="PQP.changeTab('database');">
@@ -37,7 +37,7 @@
 			</tr>
 			<tr>
 				<td class="alt3"><var>{$logs.memoryCount}</var> <h4>Memory</h4></td>
-				<td class="alt4"><var>{$logs.speedCount}</var> <h4>Speed</h4></td>
+				<td class="alt4"><var>{$logs.timeCount}</var> <h4>Time</h4></td>
 			</tr>
 			</table>
 			<table class="main">
@@ -49,8 +49,8 @@
 								<div><pre>{$log.data}</pre></div>
 							{elseif $log.type == 'memory'}
 								<div><pre>{$log.memory}</pre> <em>{$log.dataType}</em>: {$log.name} </div>
-							{elseif $log.type == 'speed'}
-								<div><pre>{$log.speed}</pre> <em>{$log.name}</em></div>
+							{elseif $log.type == 'time'}
+								<div><pre>{$log.time}</pre> <em>{$log.name}</em></div>
 							{elseif $log.type == 'error'}
 								<div><em>Line {$log.line}</em> : {$log.data} <pre>{$log.file}</pre></div>
 							{/if}
@@ -61,20 +61,20 @@
 		{/if}
 	</div>
 	
-	<div id="pqp-speed" class="pqp-box blue">
-		{if $logs.speedCount == 0}
+	<div id="pqp-time" class="pqp-box blue">
+		{if $logs.timeCount == 0}
 			<h3>This panel has no log items.</h3>
 		{else}
 			<table class="side">
-				<tr><td><var>{$totals.speed.total}</var><h4>Load Time</h4></td></tr>
-				<tr><td class="alt"><var>{$totals.speed.allowed} s</var> <h4>Max Execution Time</h4></td></tr>
+				<tr><td><var>{$totals.time.total}</var><h4>Load Time</h4></td></tr>
+				<tr><td class="alt"><var>{$totals.time.allowed} s</var> <h4>Max Execution Time</h4></td></tr>
 			</table>
 		
 			<table class="main">
 			{foreach from=$logs.console item=log}
-				{if $log.type == 'speed'}
+				{if $log.type == 'time'}
 					<tr class="log-{$log.type}">
-						<td class="{cycle values="alt,"}"><b>{$log.speed}</b> {$log.name}</td>
+						<td class="{cycle values="alt,"}"><b>{$log.time}</b> {$log.name}</td>
 					</tr>
 				{/if}
 			{/foreach}
@@ -103,7 +103,7 @@
 								Key Used: <b>{$query.explain.key}</b> &middot; 
 								Type: <b>{$query.explain.type}</b> &middot; 
 								Rows: <b>{$query.explain.rows}</b> &middot; 
-								Speed: <b>{$query.time}</b>
+								Time: <b>{$query.time}</b>
 							</em>
 							{/if}
 						</td>

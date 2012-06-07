@@ -38,7 +38,7 @@ class QuickProfiler
 		$this->gatherConsoleData();
 		$this->gatherFileData();
 		$this->gatherMemoryData();
-		$this->gatherSpeedData();
+		$this->gatherTimeData();
 		
 		// TODO: Use Smarty to render $this->data
 	}
@@ -91,8 +91,8 @@ class QuickProfiler
 					$logs['console'][$key]['data'] = print_r($log['data'], true);
 				} elseif ($log['type'] == 'memory') {
 					$logs['console'][$key]['memory'] = $this->getReadableFileSize($log['data']);
-				} elseif ($log['type'] == 'speed') {
-					$logs['console'][$key]['speed'] = $this->getReadableTime($log['data'] - $this->startTime);
+				} elseif ($log['type'] == 'time') {
+					$logs['console'][$key]['time'] = $this->getReadableTime($log['data'] - $this->startTime);
 				}
 			}
 		}
@@ -174,14 +174,14 @@ class QuickProfiler
 	}
 	
 	/**
-	 * Speed data for entire page load
+	 * Time data for entire page load
 	 */
-	protected function gatherSpeedData()
+	protected function gatherTimeData()
 	{
-		$speedTotals = array();
-		$speedTotals['total'] = $this->getReadableTime(microtime(true) - $this->startTime);
-		$speedTotals['allowed'] = ini_get('max_execution_time');
-		$this->totals['speed'] = $speedTotals;
+		$timeTotals = array();
+		$timeTotals['total'] = $this->getReadableTime(microtime(true) - $this->startTime);
+		$timeTotals['allowed'] = ini_get('max_execution_time');
+		$this->totals['time'] = $timeTotals;
 	}
 
 	/**

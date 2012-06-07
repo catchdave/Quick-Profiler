@@ -325,7 +325,7 @@
 #pqp-container .log-memory td.type{
 	background:#D28C00 !important;
 }
-#pqp-container .log-speed td.type{
+#pqp-container .log-time td.type{
 	background:#2B5481 !important;
 }
 
@@ -336,21 +336,21 @@
 	color:#fff;
 }
 
-#pqp-container .log-memory em, #pqp-container .log-speed em{
+#pqp-container .log-memory em, #pqp-container .log-time em{
 	float:left;
 	font-style:normal;
 	display:block;
 	color:#fff;
 }
-#pqp-container .log-memory pre, #pqp-container .log-speed pre{
+#pqp-container .log-memory pre, #pqp-container .log-time pre{
 	float:right;
 	white-space: normal;
 	display:block;
 	color:#FFFD70;
 }
 
-/* ----- Speed ----- */
-#pqp-speed .side td{
+/* ----- Time ----- */
+#pqp-time .side td{
 	padding:12px 0;
 }
 

@@ -42,9 +42,9 @@ class PQPExample {
 		try {
 			Console::log('Begin logging data');
 			Console::logMemory($this, 'PQP Example Class : Line '.__LINE__);
-			Console::logSpeed('Time taken to get to line '.__LINE__);
+			Console::logTime('Time taken to get to line '.__LINE__);
 			Console::log(array('Name' => 'Ryan', 'Last' => 'Campbell'));
-			Console::logSpeed('Time taken to get to line '.__LINE__);
+			Console::logTime('Time taken to get to line '.__LINE__);
 			Console::logMemory($this, 'PQP Example Class : Line '.__LINE__);
 			Console::log('Ending log below with a sample error.');
 			throw new Exception('Unable to write to log!');
@@ -91,16 +91,16 @@ class PQPExample {
 	}
 	
 	/*-----------------------------------
-	     POINT IN TIME SPEED MARKS
+	     POINT IN TIME Time MARKS
 	------------------------------------*/
 	
 	public function sampleSpeedComparison() {
-		Console::logSpeed('Time taken to get to line '.__LINE__);
-		Console::logSpeed('Time taken to get to line '.__LINE__);
-		Console::logSpeed('Time taken to get to line '.__LINE__);
-		Console::logSpeed('Time taken to get to line '.__LINE__);
-		Console::logSpeed('Time taken to get to line '.__LINE__);
-		Console::logSpeed('Time taken to get to line '.__LINE__);
+		Console::logTime('Time taken to get to line '.__LINE__);
+		Console::logTime('Time taken to get to line '.__LINE__);
+		Console::logTime('Time taken to get to line '.__LINE__);
+		Console::logTime('Time taken to get to line '.__LINE__);
+		Console::logTime('Time taken to get to line '.__LINE__);
+		Console::logTime('Time taken to get to line '.__LINE__);
 	}
 	
 	public function __destruct() {
@@ -165,11 +165,11 @@ strong a{
 	<h3>On this Page You Can See How to <br /> Use the PHP Quick Profiler to...</h3>
 
 	<ul>
-	<li>Log PHP Objects. [ <a href="#" onclick="changeTab('console'); return false;">Demo</a> ]</li>
-	<li>Watch as a string eats up memory. [ <a href="#" onclick="changeTab('memory'); return false;">Demo</a> ]</li>
-	<li>Monitor our queries and their indexes. [ <a href="#" onclick="changeTab('queries'); return false;">Demo</a> ]</li>
-	<li>Ensure page execution time is acceptable. [ <a href="#" onclick="changeTab('speed'); return false;">Demo</a> ]</li>
-	<li>Prevent files from getting out of control. [ <a href="#" onclick="changeTab('files'); return false;">Demo</a> ]</li>
+	<li>Log PHP Objects. [ <a href="#" onclick="PQP.changeTab('console'); return false;">Demo</a> ]</li>
+	<li>Watch as a string eats up memory. [ <a href="#" onclick="PQP.changeTab('memory'); return false;">Demo</a> ]</li>
+	<li>Monitor our queries and their indexes. [ <a href="#" onclick="PQP.changeTab('queries'); return false;">Demo</a> ]</li>
+	<li>Ensure page execution time is acceptable. [ <a href="#" onclick="PQP.changeTab('time'); return false;">Demo</a> ]</li>
+	<li>Prevent files from getting out of control. [ <a href="#" onclick="PQP.changeTab('files'); return false;">Demo</a> ]</li>
 	</ul>
 	
 	<strong>Return to <a href="http://particletree.com/features/php-quick-profiler/">Particletree</a>.</strong>

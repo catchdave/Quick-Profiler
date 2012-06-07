@@ -251,6 +251,19 @@
 	background:#2E2E2E;
 }
 
+.pQp .main div.details {
+	padding-left: 20px;
+	overflow: auto;
+	word-break: break-word;
+}
+.pQp .main a {
+	color: #66B2FF;
+}
+.pQp .main a:hover {
+	color: #fff;
+	text-decoration: underline;
+}
+
 /* ----- Side ----- */
 
 #pqp-container .side {
@@ -373,9 +386,16 @@
 	padding:12px 0;
 }
 
-/* ----- Files ----- */
-
-
+/* ----- Memcached/Redis ----- */
+.module-cache .main span {
+	text-transform: uppercase;
+}
+.module-cache .main span.get {
+	color: #32C832;
+}
+.module-cache .main span.set {
+	color: #C83232;
+}
 
 /* ----- Footer ----- */
 
@@ -417,4 +437,8 @@
 #pqp-footer a:active, #pqp-footer a:active strong, #pqp-footer a:active b{
 	background:#ECF488;
 	color:green !important;
+}
+
+.pQp-hide {
+	display: none;
 }

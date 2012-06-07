@@ -90,9 +90,9 @@ class QuickProfiler
 				if ($log['type'] == 'log') {
 					$logs['console'][$key]['data'] = print_r($log['data'], true);
 				} elseif ($log['type'] == 'memory') {
-					$logs['console'][$key]['data'] = $this->getReadableFileSize($log['data']);
+					$logs['console'][$key]['memory'] = $this->getReadableFileSize($log['data']);
 				} elseif ($log['type'] == 'speed') {
-					$logs['console'][$key]['data'] = $this->getReadableTime($log['data'] - $this->startTime);
+					$logs['console'][$key]['speed'] = $this->getReadableTime($log['data'] - $this->startTime);
 				}
 			}
 		}

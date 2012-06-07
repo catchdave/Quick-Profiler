@@ -48,9 +48,9 @@
 							{if $log.type == 'log'} 
 								<div><pre>{$log.data}</pre></div>
 							{elseif $log.type == 'memory'}
-								<div><pre>{$log.data}</pre> <em>{$log.dataType}</em>: {$log.name} </div>
+								<div><pre>{$log.memory}</pre> <em>{$log.dataType}</em>: {$log.name} </div>
 							{elseif $log.type == 'speed'}
-								<div><pre>{$log.data}</pre> <em>{$log.name}</em></div>
+								<div><pre>{$log.speed}</pre> <em>{$log.name}</em></div>
 							{elseif $log.type == 'error'}
 								<div><em>Line {$log.line}</em> : {$log.data} <pre>{$log.file}</pre></div>
 							{/if}
@@ -74,7 +74,7 @@
 			{foreach from=$logs.console item=log}
 				{if $log.type == 'speed'}
 					<tr class="log-{$log.type}">
-						<td class="{cycle values="alt,"}"><b>{$log.data}</b> {$log.name}</td>
+						<td class="{cycle values="alt,"}"><b>{$log.speed}</b> {$log.name}</td>
 					</tr>
 				{/if}
 			{/foreach}
@@ -126,7 +126,7 @@
 			{foreach from=$logs.console item=log}
 				{if $log.type == 'memory'}
 					<tr class="log-{$log.type}">
-						<td class="{cycle values="alt,"}"><b>{$log.data}</b> <em>{$log.dataType}</em>: {$log.name}</td>
+						<td class="{cycle values="alt,"}"><b>{$log.memory}</b> <em>{$log.dataType}</em>: {$log.name}</td>
 					</tr>
 				{/if}
 			{/foreach}

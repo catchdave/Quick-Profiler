@@ -96,6 +96,8 @@
 			{foreach from=$database item=query}
 					<tr>
 						<td class="{cycle values="alt,"}">
+							{%if $query.meta%}<span class="red">{%$query.meta%}</span>{%/if%}
+							<b>{%$query.time%}<span> | </span>{%$query.memory%}</b>
 							{$query.sql}
 							{if $query.explain}
 							<em>
@@ -103,7 +105,6 @@
 								Key Used: <b>{$query.explain.key}</b> &middot; 
 								Type: <b>{$query.explain.type}</b> &middot; 
 								Rows: <b>{$query.explain.rows}</b> &middot; 
-								Time: <b>{$query.time}</b>
 							</em>
 							{/if}
 						</td>
@@ -143,6 +144,19 @@
 			<table class="main">
 				{foreach from=$files item=file}
 					<tr><td class="{cycle values="alt,"}"><b>{$file.size}</b> {$file.name}</td></tr>
+				{/foreach}
+			</table>
+	</div>
+	
+	<div id="pqp-classes" class="pqp-box red">
+			<table class="side">
+				<tr><td><var>{$totals.classes.count}</var><h4>Total Classes</h4></td></tr>
+				<tr><td class="alt"><var>{$totals.classes.lines}</var> <h4>Total Lines</h4></td></tr>
+				<tr><td><var>{$totals.classes.largest}</var> <h4>Largest</h4></td></tr>
+			</table>
+			<table class="main">
+				{foreach from=$classes item=class}
+					<tr><td class="{cycle values="alt,"}"><b>{$class.lines} lines</b> {$class.name}</td></tr>
 				{/foreach}
 			</table>
 	</div>

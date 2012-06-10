@@ -39,19 +39,20 @@
 	</table>
 	
 	<div id="pqp-console" class="pqp-box green selected">
+		<table class="side">
+		<tr>
+			<td class="alt1"><var>{$data.logs.counts.log|default:0}</var><h4>Logs</h4></td>
+			<td class="alt2"><var>{$data.logs.counts.error|default:0}</var> <h4>Errors</h4></td>
+		</tr>
+		<tr>
+			<td class="alt3"><var>{$data.logs.counts.memory|default:0}</var> <h4>Memory</h4></td>
+			<td class="alt4"><var>{$data.logs.counts.time|default:0}</var> <h4>Time</h4></td>
+		</tr>
+		</table>
+		
 		{if $totals.logs.count == 0}
 			<h3>This panel has no log items.</h3>
 		{else}
-			<table class="side">
-			<tr>
-				<td class="alt1"><var>{$data.logs.counts.log}</var><h4>Logs</h4></td>
-				<td class="alt2"><var>{$data.logs.counts.error}</var> <h4>Errors</h4></td>
-			</tr>
-			<tr>
-				<td class="alt3"><var>{$data.logs.counts.memory}</var> <h4>Memory</h4></td>
-				<td class="alt4"><var>{$data.logs.counts.time}</var> <h4>Time</h4></td>
-			</tr>
-			</table>
 			<table class="main">
 				{foreach from=$data.logs.console item=log}
 					<tr class="log-{$log.type}">
@@ -74,14 +75,13 @@
 	</div>
 	
 	<div id="pqp-time" class="pqp-box blue">
-		{if !isset($data.logs.counts) || $data.logs.counts.time == 0}
+		<table class="side">
+			<tr><td><var>{$totals.time.total}</var><h4>Load Time</h4></td></tr>
+			<tr><td class="alt"><var>{$totals.time.allowed}</var> <h4>Max Execution Time</h4></td></tr>
+		</table>
+		{if $data.logs.counts.time|default:0 == 0}
 			<h3>This panel has no log items.</h3>
 		{else}
-			<table class="side">
-				<tr><td><var>{$totals.time.total}</var><h4>Load Time</h4></td></tr>
-				<tr><td class="alt"><var>{$totals.time.allowed} s</var> <h4>Max Execution Time</h4></td></tr>
-			</table>
-		
 			<table class="main">
 			{foreach from=$data.logs.console item=log}
 				{if $log.type == 'time'}
@@ -99,14 +99,14 @@
 	{/foreach}
 	
 	<div id="pqp-memory" class="pqp-box orange">
-		{if !isset($data.logs.counts) || $data.logs.counts.memory == 0}
+		<table class="side">
+			<tr><td><var>{$totals.memory.used}</var><h4>Used Memory</h4></td></tr>
+			<tr><td class="alt"><var>{$totals.memory.total}</var> <h4>Total Available</h4></td></tr>
+		</table>
+		
+		{if $data.logs.counts.memory|default:0 == 0}
 			<h3>This panel has no log items.</h3>
 		{else}
-			<table class="side">
-				<tr><td><var>{$totals.memory.used}</var><h4>Used Memory</h4></td></tr>
-				<tr><td class="alt"><var>{$totals.memory.total}</var> <h4>Total Available</h4></td></tr>
-			</table>
-		
 			<table class="main">
 			{foreach from=$data.logs.console item=log}
 				{if $log.type == 'memory'}
@@ -136,7 +136,7 @@
 			<table class="side">
 				<tr><td><var>{$totals.classes.count}</var><h4>Total Classes</h4></td></tr>
 				<tr><td class="alt"><var>{$totals.classes.lines}</var> <h4>Total Lines</h4></td></tr>
-				<tr><td><var>{$totals.classes.largest}</var> <h4>Largest</h4></td></tr>
+				<tr><td><var>{$totals.classes.largest}</var> <h4>Longest</h4></td></tr>
 			</table>
 			<table class="main">
 				{foreach from=$data.classes item=class}

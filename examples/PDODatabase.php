@@ -11,6 +11,8 @@ class PDODatabase extends PDO implements ProfileObservable
 	 */
 	static $profiler;
 	
+	const PROFILE_TYPE = 'mysql';
+	
 	/**
 	 * An example of how you can wrap database calls for profiling.
 	 * 
@@ -37,7 +39,7 @@ class PDODatabase extends PDO implements ProfileObservable
 	public function attachProfiler(QuickProfiler $profiler)
 	{
 		self::$profiler = $profiler;
-		self::$profiler->increment('database', 'duplicates', 0); // initialize duplicate count
+		self::$profiler->increment(self::PROFILE_TYPE, 'duplicates', 0); // initialize duplicate count
 	}
 	
 	/**
@@ -47,7 +49,7 @@ class PDODatabase extends PDO implements ProfileObservable
 	{
 		static $duplicates = array();
 		
-		if (!isset(self::$profiler)) {
+		if (self::$profiler === null) {
 			return; // no profiler attached
 		}
 		
@@ -65,9 +67,9 @@ class PDODatabase extends PDO implements ProfileObservable
 		$duplicates[$hash] = true;
 		
 		if ($event['duplicate']) {
-		  self::$profiler->increment('database', 'duplicates');
+		  self::$profiler->increment(self::PROFILE_TYPE, 'duplicates');
 		}
-		self::$profiler->addEvent('database', $event);
+		self::$profiler->addEvent(self::PROFILE_TYPE, $event);
 	}
 	
 	/**
@@ -78,7 +80,7 @@ class PDODatabase extends PDO implements ProfileObservable
 	protected function explainQuery(array $event)
 	{
 		try {
-			$query = 'EXPLAIN ' . $sql;
+			$query = 'EXPLAIN ' . $event['sql'];
 			$results = parent::query($query);
 			
 			if (count($results) > 0) {
